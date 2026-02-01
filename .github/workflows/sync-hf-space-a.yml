@@ -28,4 +28,5 @@ jobs:
           git branch -m master main
 
           git remote add hf "https://lyx51:${HF_TOKEN}@huggingface.co/spaces/lyx51/space-a"
-          git push hf main --force-with-lease
+          git fetch hf
+          git push hf main:main --force
