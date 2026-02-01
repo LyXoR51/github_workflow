@@ -14,7 +14,6 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
         run: |
-          # Crée un nouveau dépôt git temporaire pour space-a/
           mkdir space-a-tmp
           cp -r space-a/* space-a-tmp/
           cd space-a-tmp
@@ -22,13 +21,10 @@ jobs:
           git init
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
+          git config --global init.defaultBranch main
 
-          # Ajoute et commite tout le contenu de space-a/
           git add .
           git commit -m "Deploy space-a to Hugging Face"
 
-          # Ajoute le remote HF
           git remote add hf "https://lyx51:${HF_TOKEN}@huggingface.co/spaces/lyx51/space-a"
-
-          # Push (force safe)
           git push hf main --force-with-lease
