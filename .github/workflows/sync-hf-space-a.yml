@@ -1,36 +1,19 @@
-name: Sync HF Space A
+name: Deploy Space A to Hugging Face
+
 on:
   push:
-    paths: ['space-a/**']  # Se déclenche uniquement si le dossier space-a change
-    branches: [main]
+    paths:
+      - 'space-a/**'
 
 jobs:
-  sync:
+  deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          lfs: true  # Si tu utilises Git LFS
-
-      - name: Configure Git user identity
+      - uses: actions/checkout@v4
+      - name: Push to Hugging Face Space A
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
-
-      - name: Push only space-a folder to Hugging Face Space A
-        env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
-        run: |
-          # Créer une archive contenant seulement le contenu du dossier space-a
-          git archive --format=tar --prefix=space-a/ HEAD:space-a | tar -x
-
-          # Initialiser un dépôt Git dans le dossier extrait
-          git init
-          git add .
-          git commit -m "Sync space-a folder to Hugging Face Space A"
-          git remote add origin "https://huggingface.co/spaces/lyx51/space-a"
-
-          # Pousser les fichiers vers Hugging Face Space
-          git push --force-with-lease "https://lyx51:${HF_TOKEN}@huggingface.co/spaces/lyx51/space-a" master:main
+          cd space-a
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git remote add hf https://<ton-username>:${{ secrets.HF_TOKEN }}@huggingface.co/spaces/<ton-username>/space-a
+          git push hf main
