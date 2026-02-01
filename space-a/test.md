@@ -10,3 +10,4 @@ test du worflow a  ajout config init
 1
 1
 et voila!
+test a et b
